@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHERISH</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Default to 3 columns for mobile */
+    grid-gap: 0;
+  }
+  .grid-item {
+    border: none;
+    padding-bottom: 100%; /* Keeps aspect ratio */
+    position: relative; /* Needed for absolute positioning of the content */
+    background-size: cover; /* Ensures the image covers the entire item */
+    background-position: 50% 50%; /* Center the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    overflow: hidden; /* Ensures the image does not spill outside the box */
+  }
+  @media (min-width: 768px) {
+    .grid-container {
+      grid-template-columns: repeat(4, 1fr); /* 4 columns for desktop */
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-container">
+  <!-- Grid items will be added by JavaScript -->
+</div>
+
+<script>
+  let container = document.querySelector('.grid-container');
+  
+  // Array of image paths (replace with your actual image paths)
+  const imagePaths = ['assets/DONOTBUY1.png','assets/CHERISH4.png','assets/CHERISH5.png','assets/STALK3.png','assets/HOE1.png','assets/MJART1.jpg','assets/RANDOM1.png'];
+
+  function createGridItem(addImage = false) {
+    let newItem = document.createElement('div');
+    newItem.className = 'grid-item';
+
+    if (addImage) {
+      let imagePath = imagePaths[Math.floor(Math.random() * imagePaths.length)];
+      newItem.style.backgroundImage = `url('${imagePath}')`;
+      newItem.style.backgroundSize = 'cover';
+      // Randomize background position
+      newItem.style.backgroundPosition = `${getRandomPosition()}% ${getRandomPosition()}%`;
+    } else {
+      newItem.style.background = getRandomColor();
+    }
+
+    container.appendChild(newItem);
+  }
+  
+  // Load initial grid items
+  for (let i = 0; i < 12; i++) {
+    createGridItem(Math.random() < 1 ); // 10% chance to add an image
+  }
+
+  window.onscroll = function() {
+    if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 100) {
+      for (let i = 0; i < 3; i++) {
+        createGridItem(Math.random() < 1); // 30% chance to add an image
+      }
+    }
+  };
+
+  function getRandomPosition() {
+    return Math.random() * 100; // Position between 0% and 100%
+  }
+
+  function getRandomColor() {
+    return `hsl(${Math.random() * 360}, 100%, 75%)`; // Random bright color
+  }
+</script>
+
+</body>
+</html>
